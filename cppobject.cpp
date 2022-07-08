@@ -1,55 +1,28 @@
 //file CppObject.cpp
-#include "CppObject.h"
+#include "cppobject.h"
 #include <QDebug>
-
+#include <QString>
 CppObject::CppObject(QObject *parent)
-    : QObject(parent),myName("none"),myYear(0)
+    : QObject(parent),myName("nobne"),myYear(0)
 {
+    timer = new QTimer(this);
 
+    connect(timer, SIGNAL(timeout()), this, SLOT(readData()));
+
+    timer->start(3000);
 }
 
-void CppObject::sendSignal()
+void CppObject::readData()
 {
-         // Для тестирования отправляем сигнал после вызова этой функции
-    qDebug()<<"cpp sendSignal method";
-    emit cppSignalA();
-    emit cppSignalB(myName,myYear);
-}
-
-void CppObject::setName(const QString &name)
-{
-    qDebug()<<"cpp setName"<<name;
-    myName=name;
+myName = "ff";
 }
 
 QString CppObject::getName() const
 {
-    qDebug()<<"cpp getName";
-    return myName;
+    //myName = QString::number(1);
+
+return myName;
 }
 
-void CppObject::setYear(int year)
-{
-    qDebug()<<"cpp setYear"<<year;
-    if(year!=myYear){
-        qDebug()<<"cpp emit yearChanged";
-        myYear=year;
-        emit yearChanged(myYear);
-    }
-}
 
-int CppObject::getYear() const
-{
-    qDebug()<<"cpp getYear";
-    return myYear;
-}
 
-void CppObject::cppSlotA()
-{
-    qDebug()<<"cpp slot a";
-}
-
-void CppObject::cppSlotB(const QString &str, int value)
-{
-    qDebug()<<"cpp slot b"<<str<<value;
-}
